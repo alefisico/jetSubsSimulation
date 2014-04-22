@@ -44,8 +44,8 @@ print INFILENAME
 OUTFILENAME = OUTDIR+ '/'+TAG+'/aodsim/'+TAG+'_PU_532_'+JOB+'_aodsim.root'
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(500)
-#    input = cms.untracked.int32(1)
+    #input = cms.untracked.int32(500)
+    input = cms.untracked.int32(-1)
 )
 
 # Input source
