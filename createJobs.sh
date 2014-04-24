@@ -10,12 +10,13 @@
 ###
 ###  How to run: 
 ###  source createJobs.sh
-###  100 is the mass of the daugher particle and 250 of the mother
-###  (If it is an executable (chmod +x run_pattuplozer_job.sh):
-###  ./run_pattuplozer_job.sh 100 250
+###  (If it is an executable (chmod +x createJobs.sh):
+###  ./createJobs.sh 
 ###
+###  You must change the PARAMETERS according with your needs. Initially is the only part that you should modify.
 ###  For different masses, like 250St2toSt1Z_100RPVSttojj, you may want to include the stop2 variable
 ###  and then the variable Name is like: ${stop2}St2toSt1Z_${stop1}RPVSttojj
+###  Run is very specific of what I was doing. You can leave it with 0
 ###
 ####################################################
 
@@ -38,10 +39,11 @@ LHE_File_Dir=/cms/gomez/Substructure/Generation/MG5v1.5.11/RPVSttojj/Events/RPVS
 LHE_Name=unweighted_events_fixed.lhe
 emailForNotifications=gomez@physics.rutgers.edu
 #hadronizer=Hadronizer_MgmMatchTune4C_7TeV_madgraph_pythia8_cff_py_GEN_SIM_DIGI_L1_DIGI2RAW_HLT_RAW2DIGI_L1Reco_RECO_PU.py
-hadronizer=templates/Hadronizer_TuneD6T_8TeV_madgraph_tauola_cff_py_GEN_SIM_DIGI_L1_DIGI2RAW_HLT_RAW2DIGI_L1Reco_RECO_PU_1.py
+hadronizer=templates/Hadronizer_TuneD6T_8TeV_madgraph_tauola_cff_py_GEN_SIM_DIGI_L1_DIGI2RAW_HLT_RAW2DIGI_L1Reco_RECO_PU.py
 
 #####################################################
 #### Here is where the code starts.. 
+#### Initially you shouldn't modify this part
 #####################################################
 
 echo " Creating directories..."
