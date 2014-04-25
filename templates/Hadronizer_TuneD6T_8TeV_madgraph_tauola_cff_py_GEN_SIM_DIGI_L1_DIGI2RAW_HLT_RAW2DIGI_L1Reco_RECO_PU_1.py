@@ -86,11 +86,7 @@ process.AODSIMoutput = cms.OutputModule("PoolOutputModule",
 # Additional output definition
 
 # Other statements
-#process.mix.input.fileNames = cms.untracked.vstring(['dcap://cmsdca.fnal.gov:24136/pnfs/fnal.gov/usr/cms/WAX/11/store/relval/CMSSW_5_3_6-START53_V14/RelValProdMinBias/AODSIM/v2/00000/F800D573-0A2A-E211-98B4-002618943957.root'])
-#process.mix.input.fileNames = cms.untracked.vstring(['dcap://cmsdca.fnal.gov:24136/pnfs/fnal.gov/usr/cms/WAX/11/store/relval/CMSSW_5_3_6-START53_V14/RelValProdMinBias/GEN-SIM-RAW/v2/00000/52000D8A-032A-E211-BC94-00304867BFA8.root','dcap://cmsdca.fnal.gov:24136/pnfs/fnal.gov/usr/cms/WAX/11/store/relval/CMSSW_5_3_6-START53_V14/RelValProdMinBias/GEN-SIM-RAW/v2/00000/4677049F-042A-E211-8525-0026189438E8.root'])
-process.mix.input.fileNames = cms.untracked.vstring(['dcap://cmsdca.fnal.gov:24136/pnfs/fnal.gov/usr/cms/WAX/11/store/mc/Summer12/MinBias_TuneZ2_8TeV-pythia6/GEN-SIM/START53_V7C-v1/00000/FEF271ED-B538-E211-93C6-00248C55CC40.root'])
-#process.mix.input.fileNames = cms.untracked.vstring(['das:/RelValProdMinBias/CMSSW_5_3_6-START53_V14-v2/AODSIM'])
-#process.mix.input.fileNames = cms.untracked.vstring(['file:/cms/gomez/Substructure/Generation/Simulation/CMSSW_5_3_2_patch4/src/mySimulations/F87E646E-BC38-E211-8429-00261894391C.root'])  ### to run in hexfarm
+process.mix.input.fileNames = cms.untracked.vstring(['file:/eos/uscms/store/user/duggan/mc/Summer12/MinBias_TuneZ2_8TeV-pythia6/GEN-SIM/START53_V7C-v1/00000/FEF271ED-B538-E211-93C6-00248C55CC40.root'])
 # customise the HLT menu for running on MC
 from HLTrigger.Configuration.customizeHLTforMC import customizeHLTforMC
 process = customizeHLTforMC(process)
