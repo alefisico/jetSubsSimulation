@@ -86,7 +86,7 @@ process.AODSIMoutput = cms.OutputModule("PoolOutputModule",
 # Additional output definition
 
 # Other statements
-process.mix.input.fileNames = cms.untracked.vstring(['file:/eos/uscms/store/user/duggan/mc/Summer12/MinBias_TuneZ2_8TeV-pythia6/GEN-SIM/START53_V7C-v1/00000/FEF271ED-B538-E211-93C6-00248C55CC40.root'])
+process.mix.input.fileNames = cms.untracked.vstring(['dcap://cmsdca.fnal.gov:24136/pnfs/fnal.gov/usr/cms/WAX/11/store/mc/Summer12/MinBias_TuneZ2_8TeV-pythia6/GEN-SIM/START53_V7C-v1/00000/FEF271ED-B538-E211-93C6-00248C55CC40.root'])
 # customise the HLT menu for running on MC
 from HLTrigger.Configuration.customizeHLTforMC import customizeHLTforMC
 process = customizeHLTforMC(process)
