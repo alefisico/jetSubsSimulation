@@ -28,7 +28,7 @@ user=$USER
 stop1=100
 stop2=250											# Mass of the stop2
 numJobs=200
-run=9
+run=8
 #foreach Process ("jj") # "bj")									# Here I have two different final states (Maybe you dont need it)
 
 Base_Dir=/uscms_data/d3/${user}/Substructure/Simulation/CMSSW_5_3_2_patch4/src/			# Dir from where we have to load the enviroment
@@ -40,7 +40,7 @@ LHE_File_Dir=/eos/uscms/store/user/algomez/RPVSt100tojj_8TeV_HT500/lhe/				# Dir
 LHE_Name=${Name}_${run}.lhe
 emailForNotifications=gomez@physics.rutgers.edu
 #hadronizer=Hadronizer_MgmMatchTune4C_7TeV_madgraph_pythia8_cff_py_GEN_SIM_DIGI_L1_DIGI2RAW_HLT_RAW2DIGI_L1Reco_RECO_PU.py
-hadronizer=templates/Hadronizer_TuneD6T_8TeV_madgraph_tauola_cff_py_GEN_SIM_DIGI_L1_DIGI2RAW_HLT_RAW2DIGI_L1Reco_RECO_PU.py
+hadronizer=templates/Hadronizer_TuneD6T_8TeV_madgraph_tauola_cff_py_GEN_SIM_DIGI_L1_DIGI2RAW_HLT_RAW2DIGI_L1Reco_RECO_PU_1.py
 
 #####################################################
 #### Here is where the code starts.. 
@@ -83,7 +83,7 @@ fi
 cp ${Main_Dir}/${hadronizer} ${namePythonFile} 
 
 sed -i 's/INFILENAME = /#INFILENAME =/' ${namePythonFile}
-sed -i 's,print INFILENAME,INFILENAME = '"\'${LHE_File_Dir}""${LHE_Name}\'"',' ${namePythonFile}
+sed -i 's,print INFILENAME,INFILENAME = '"\'file:${LHE_File_Dir}""${LHE_Name}\'"',' ${namePythonFile}
 
 ########################################################
 ######### Small file with the commands for condor
@@ -97,18 +97,21 @@ echo '#!/bin/bash
 
 export CUR_DIR=$PWD
 
-source /uscmst1/prod/sw/cms/setup/cshrc prod
 export LC_ALL="en_US.UTF-8"
 export SCRAM_ARCH="slc5_amd64_gcc462"
+export COIN_FULL_INDIRECT_RENDERING=1
+source /uscmst1/prod/sw/cms/setup/shrc prod
 
 #---------------------------------------------------------------
 
 cd '${Base_Dir}'
 eval `scramv1 runtime -sh`
 
-cd $CUR_DIR
+# Switch to your working directory below
+cd ${_CONDOR_SCRATCH_DIR}
 
-cmsRun '${namePythonFile}' $1 $2 $3 $4 $5 '>> ${nameRunFile}
+
+cmsRun '${Working_Dir}'/'${Name}'_'${run}'/'${namePythonFile}' $1 $2 $3 $4 $5 '>> ${nameRunFile}
 
 #chmod +x ${nameRunFile}
 
@@ -121,7 +124,7 @@ if [ -f $nameCondorFile ]; then
 	rm -rf $nameCondorFile
 fi
 echo "universe = vanilla
-Requirements = Memory >= 199 &&OpSys == "LINUX"&& (Arch != "DUMMY" )&& Disk > 1000000
+Requirements = Memory >= 199 &&OpSys == \"LINUX\"&& (Arch != \"DUMMY\" )&& Disk > 1000000
 Should_Transfer_Files = YES
 WhenToTransferOutput = ON_EXIT
 Executable = ${Working_Dir}/${Name}_${run}/${nameRunFile}
