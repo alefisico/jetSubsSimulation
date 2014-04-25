@@ -108,7 +108,7 @@ cd '${Base_Dir}'
 eval `scramv1 runtime -sh`
 
 # Switch to your working directory below
-cd ${_CONDOR_SCRATCH_DIR}
+#cd ${_CONDOR_SCRATCH_DIR}
 
 
 cmsRun '${Working_Dir}'/'${Name}'_'${run}'/'${namePythonFile}' $1 $2 $3 $4 $5 '>> ${nameRunFile}
