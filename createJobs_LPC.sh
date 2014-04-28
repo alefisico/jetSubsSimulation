@@ -40,7 +40,7 @@ LHE_File_Dir=/eos/uscms/store/user/algomez/RPVSt100tojj_8TeV_HT500/lhe/				# Dir
 LHE_Name=${Name}_${run}.lhe
 emailForNotifications=gomez@physics.rutgers.edu
 #hadronizer=Hadronizer_MgmMatchTune4C_7TeV_madgraph_pythia8_cff_py_GEN_SIM_DIGI_L1_DIGI2RAW_HLT_RAW2DIGI_L1Reco_RECO_PU.py
-hadronizer=templates/Hadronizer_TuneD6T_8TeV_madgraph_tauola_cff_py_GEN_SIM_DIGI_L1_DIGI2RAW_HLT_RAW2DIGI_L1Reco_RECO_PU.py
+hadronizer=templates/Hadronizer_TuneD6T_8TeV_madgraph_tauola_cff_py_GEN_SIM_DIGI_L1_DIGI2RAW_HLT_RAW2DIGI_L1Reco_RECO_PU_1.py
 
 #####################################################
 #### Here is where the code starts.. 
