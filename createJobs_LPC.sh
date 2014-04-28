@@ -27,8 +27,8 @@
 user=$USER
 stop1=100
 stop2=250											# Mass of the stop2
-numJobs=200
-run=8
+numJobs=400
+run=6
 #foreach Process ("jj") # "bj")									# Here I have two different final states (Maybe you dont need it)
 
 Base_Dir=/uscms_data/d3/${user}/Substructure/Simulation/CMSSW_5_3_2_patch4/src/			# Dir from where we have to load the enviroment
@@ -108,7 +108,7 @@ cd '${Base_Dir}'
 eval `scramv1 runtime -sh`
 
 # Switch to your working directory below
-#cd ${_CONDOR_SCRATCH_DIR}
+cd ${_CONDOR_SCRATCH_DIR}
 
 
 cmsRun '${Working_Dir}'/'${Name}'_'${run}'/'${namePythonFile}' $1 $2 $3 $4 $5 '>> ${nameRunFile}
@@ -132,7 +132,7 @@ Notify_User = ${emailForNotifications}" >> ${nameCondorFile}
 
 for ((version=1;version<${numJobs}+1;version++))
 do
-	events=$(echo "1+(${version}-1)*500" | bc)
+	events=$(echo "1+(${version}-1)*250" | bc)
 	echo "
 Output = ${Working_Dir}/${Name}_${run}/${Name}_${version}.stdout
 Error = ${Working_Dir}/${Name}_${run}/${Name}_${version}.stderr
@@ -149,5 +149,4 @@ echo " Running script in condor... "
 condor_submit ${nameCondorFile}
 
 echo " Have a nice day :D "
-
 
