@@ -26,17 +26,18 @@
 
 user=$USER
 stop1=100
-stop2=250											# Mass of the stop2
+stop2=250                                                                                       # Mass of the stop2
+run=8
 numJobs=400
-run=6
-#foreach Process ("jj") # "bj")									# Here I have two different final states (Maybe you dont need it)
+totalNumberEvents=100000
+#foreach Process ("jj") # "bj")                                                                 # Here I have two different final states (Maybe you dont need it)
 
-Base_Dir=/uscms_data/d3/${user}/Substructure/Simulation/CMSSW_5_3_2_patch4/src/			# Dir from where we have to load the enviroment
-Main_Dir=${Base_Dir}jetSubsSimulation/								# Main Dir
-#Name=${stop2}St2toSt1Z_${stop1}RPVSttojj_8TeV_8TeVPU						# Name of the process
-Name=RPVSt${stop1}tojj_8TeV_HT500		 						# Name of the process
-Output_Dir=/eos/uscms/store/user/${user}/${Name}/						# Output directory
-LHE_File_Dir=/eos/uscms/store/user/algomez/RPVSt100tojj_8TeV_HT500/lhe/				# Directory of the lhe file.
+Base_Dir=/uscms_data/d3/${user}/Substructure/Simulation/CMSSW_5_3_2_patch4/src/                 # Dir from where we have to load the enviroment
+Main_Dir=${Base_Dir}jetSubsSimulation/                                                          # Main Dir
+#Name=${stop2}St2toSt1Z_${stop1}RPVSttojj_8TeV_8TeVPU                                           # Name of the process
+Name=RPVSt${stop1}tojj_8TeV_HT500                                                               # Name of the process
+Output_Dir=/eos/uscms/store/user/${user}/${Name}/                                               # Output directory
+LHE_File_Dir=/eos/uscms/store/user/algomez/RPVSt100tojj_8TeV_HT500/lhe/                         # Directory of the lhe file.
 LHE_Name=${Name}_${run}.lhe
 emailForNotifications=gomez@physics.rutgers.edu
 #hadronizer=Hadronizer_MgmMatchTune4C_7TeV_madgraph_pythia8_cff_py_GEN_SIM_DIGI_L1_DIGI2RAW_HLT_RAW2DIGI_L1Reco_RECO_PU.py
@@ -46,26 +47,26 @@ hadronizer=templates/Hadronizer_TuneD6T_8TeV_madgraph_tauola_cff_py_GEN_SIM_DIGI
 #### Here is where the code starts.. 
 #### Initially you shouldn't modify this part
 #####################################################
-
+eventsPerJob=$((${totalNumberEvents}/${numJobs}))
 echo " Creating directories..."
 ####### Working directory
-Working_Dir=${Main_Dir}/${Name}	
+Working_Dir=${Main_Dir}/${Name} 
 if [ -d $Working_Dir ]; then
-	rm -rf $Working_Dir/${Name}_${run}
-	mkdir -p $Working_Dir/${Name}_${run}
+        rm -rf $Working_Dir/${Name}_${run}
+        mkdir -p $Working_Dir/${Name}_${run}
 else
-	mkdir -p $Working_Dir/${Name}_${run} 
+        mkdir -p $Working_Dir/${Name}_${run} 
 fi
 cd $Working_Dir/${Name}_${run}
 
 ####### EOS directory for root files
 if [ -d $Output_Dir ]; then
-	#rm -rf $Output_Dir
-	mkdir -p $Output_Dir/${Name}_${run}/lhe/
-	mkdir -p $Output_Dir/${Name}_${run}/aodsim/
+        #rm -rf $Output_Dir
+        mkdir -p $Output_Dir/${Name}_${run}/lhe/
+        mkdir -p $Output_Dir/${Name}_${run}/aodsim/
 else
-	mkdir -p $Output_Dir/${Name}_${run}/lhe/
-	mkdir -p $Output_Dir/${Name}_${run}/aodsim/
+        mkdir -p $Output_Dir/${Name}_${run}/lhe/
+        mkdir -p $Output_Dir/${Name}_${run}/aodsim/
 fi
 
 ######## Create a symbolic link to the lhe file
@@ -77,13 +78,14 @@ fi
 echo " Creating python file... "
 namePythonFile=${Name}_Hadronizer.py
 if [ -f $namePythonFile ]; then
-	rm -rf $namePythonFile
+        rm -rf $namePythonFile
 fi
 
 cp ${Main_Dir}/${hadronizer} ${namePythonFile} 
 
 sed -i 's/INFILENAME = /#INFILENAME =/' ${namePythonFile}
 sed -i 's,print INFILENAME,INFILENAME = '"\'file:${LHE_File_Dir}""${LHE_Name}\'"',' ${namePythonFile}
+sed -i 's,input = cms.untracked.int32(-1),input = cms.untracked.int32('"${eventsPerJob}"'),' ${namePythonFile}
 
 ########################################################
 ######### Small file with the commands for condor
@@ -91,7 +93,7 @@ sed -i 's,print INFILENAME,INFILENAME = '"\'file:${LHE_File_Dir}""${LHE_Name}\'"
 echo " Creating Bash file to run in condor.... "
 nameRunFile=runCondorPATtuple.sh
 if [ -f $nameRunFile ]; then
-	rm -rf $nameRunFile
+        rm -rf $nameRunFile
 fi
 echo '#!/bin/bash
 
@@ -121,19 +123,20 @@ cmsRun '${Working_Dir}'/'${Name}'_'${run}'/'${namePythonFile}' $1 $2 $3 $4 $5 '>
 echo " Creating condor file..... "
 nameCondorFile=condor_${name}_AOD.jdl
 if [ -f $nameCondorFile ]; then
-	rm -rf $nameCondorFile
+        rm -rf $nameCondorFile
 fi
 echo "universe = vanilla
 Requirements = Memory >= 199 &&OpSys == \"LINUX\"&& (Arch != \"DUMMY\" )&& Disk > 1000000
 Should_Transfer_Files = YES
 WhenToTransferOutput = ON_EXIT
 Executable = ${Working_Dir}/${Name}_${run}/${nameRunFile}
++AccountingGroup = \"group_rutgers.gomez\"
 Notify_User = ${emailForNotifications}" >> ${nameCondorFile}
 
 for ((version=1;version<${numJobs}+1;version++))
 do
-	events=$(echo "1+(${version}-1)*250" | bc)
-	echo "
+        events=$(echo "1+(${version}-1)*${eventsPerJob}" | bc)
+        echo "
 Output = ${Working_Dir}/${Name}_${run}/${Name}_${version}.stdout
 Error = ${Working_Dir}/${Name}_${run}/${Name}_${version}.stderr
 Log = ${Working_Dir}/${Name}_${run}/${Name}_${version}.condorlog
