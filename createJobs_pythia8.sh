@@ -30,8 +30,8 @@ stop2=250											# Mass of the stop2
 numJobs=400	
 totalNumberEvents=100000
 Base_Dir=/cms/gomez/Substructure/Generation/Simulation/CMSSW_5_3_2_patch4/src/			# Dir from where we have to load the enviroment
-Main_Dir=${Base_Dir}myPythia8Simulations/							# Main Dir
-Name=${stop2}St2toSt1Z_${stop1}RPVSttojj_8TeV_8TeVPU						# Name of the process
+Main_Dir=${Base_Dir}tmp/							# Main Dir
+Name=${stop1}RPVSttojj_8TeV_8TeVPU						# Name of the process
 Working_Dir=${Main_Dir}/${Name}									# Working directory
 Output_Dir=/home/gomez/mySpace/Stops/st_jj/AOD/${Name}/						# Output directory
 emailForNotifications=gomez@physics.rutgers.edu
@@ -72,6 +72,7 @@ fi
 cp ${Main_Dir}/${hadronizer} ${namePythonFile} 
 
 sed -i 's,input = cms.untracked.int32(10),input = cms.untracked.int32('"${eventsPerJob}"'),' ${namePythonFile}
+sed -i 's,test.root,file:'"${Output_Dir}"'/'"${Name}\'_"'+NUMBER+'"\'"'_AOD.root,' ${namePythonFile}
 
 
 ########################################################
@@ -99,7 +100,7 @@ eval `scramv1 runtime -sh`
 
 cd $CUR_DIR
 
-cmsRun '${namePythonFile}' $1 $2 $3 $4 '>> ${nameRunFile}
+cmsRun '${namePythonFile}' $1 $2 '>> ${nameRunFile}
 
 chmod +x ${nameRunFile}
 
@@ -122,7 +123,7 @@ do
 Output = ${Working_Dir}/${Name}_${version}.stdout
 Error = ${Working_Dir}/${Name}_${version}.stderr
 Log = ${Working_Dir}/${Name}_${version}.condorlog
-Arguments = ${Name} ${version} ${events} ${Output_Dir}
+Arguments = ${version} ${events} 
 Queue ">> ${nameCondorFile}
 done
 
