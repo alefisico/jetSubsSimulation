@@ -72,7 +72,7 @@ fi
 cp ${Main_Dir}/${hadronizer} ${namePythonFile} 
 
 sed -i 's,input = cms.untracked.int32(10),input = cms.untracked.int32('"${eventsPerJob}"'),' ${namePythonFile}
-sed -i 's,test.root,file:'"${Output_Dir}"'/'"${Name}\'_"'+NUMBER+'"\'"'_AOD.root,' ${namePythonFile}
+sed -i 's,test.root,file:'"${Output_Dir}"'/'"${Name}_\'"'+NUMBER+'"\'"'_AOD.root,' ${namePythonFile}
 
 
 ########################################################
@@ -116,9 +116,9 @@ echo "universe = vanilla
 Executable = ${Working_Dir}/${nameRunFile}
 Notify_User = ${emailForNotifications}" >> ${nameCondorFile}
 
-for ((version=0;version<${numJobs};version++))
+for ((version=1;version<${numJobs}-1;version++))
 do
-	events=$(echo "1+(${version})*${eventsPerJob}" | bc)
+	events=$(echo "1+(${version}-1)*${eventsPerJob}" | bc)
 	echo "
 Output = ${Working_Dir}/${Name}_${version}.stdout
 Error = ${Working_Dir}/${Name}_${version}.stderr
