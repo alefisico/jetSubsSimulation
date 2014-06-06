@@ -27,7 +27,7 @@
 user=$USER
 stop1=100
 stop2=250											# Mass of the stop2
-run=8
+run=3
 numJobs=400
 totalNumberEvents=100000
 #foreach Process ("jj") # "bj")									# Here I have two different final states (Maybe you dont need it)
@@ -62,10 +62,10 @@ cd $Working_Dir/${Name}_${run}
 ####### EOS directory for root files
 if [ -d $Output_Dir ]; then
 	#rm -rf $Output_Dir
-	mkdir -p $Output_Dir/${Name}_${run}/lhe/
+	#mkdir -p $Output_Dir/${Name}_${run}/lhe/
 	mkdir -p $Output_Dir/${Name}_${run}/aodsim/
 else
-	mkdir -p $Output_Dir/${Name}_${run}/lhe/
+	#mkdir -p $Output_Dir/${Name}_${run}/lhe/
 	mkdir -p $Output_Dir/${Name}_${run}/aodsim/
 fi
 
@@ -125,12 +125,12 @@ nameCondorFile=condor_${name}_AOD.jdl
 if [ -f $nameCondorFile ]; then
 	rm -rf $nameCondorFile
 fi
+#+AccountingGroup = \"group_rutgers.gomez\"
 echo "universe = vanilla
 Requirements = Memory >= 199 &&OpSys == \"LINUX\"&& (Arch != \"DUMMY\" )&& Disk > 1000000
 Should_Transfer_Files = YES
 WhenToTransferOutput = ON_EXIT
 Executable = ${Working_Dir}/${Name}_${run}/${nameRunFile}
-+AccountingGroup = \"group_rutgers.gomez\"
 Notify_User = ${emailForNotifications}" >> ${nameCondorFile}
 
 for ((version=1;version<${numJobs}+1;version++))
