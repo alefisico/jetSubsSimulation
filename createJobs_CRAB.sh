@@ -47,6 +47,18 @@ if [ -d $Working_Dir ]; then
 else
 	mkdir -p $Working_Dir
 fi
+
+Output_Dir=/eos/uscms/store/user/algomez/${Name}/lhe/
+if [ -d $Output_Dir ]; then
+	rm -rf $Output_Dir
+	mkdir -p $Output_Dir
+else
+	mkdir -p $Output_Dir
+fi
+
+echo " Copying LHE file to EOS area ..." 
+cp ${LHE_File} ${Output_Dir}/${Name}.lhe
+
 cd $Working_Dir/
 
 
@@ -61,7 +73,7 @@ fi
 
 cp ${Main_Dir}/${hadronizer} ${namePythonFile} 
 
-sed -i 's,test.lhe,'"${LHE_File}"',' ${namePythonFile}
+sed -i 's,file:test.lhe,root://xrootd.unl.edu//store/user/'"${user}"'/'"${Name}"'/lhe/'"${Name}"'.lhe,' ${namePythonFile}
 sed -i 's/8000/'"${Energy}"'/' ${namePythonFile}
 
 ########################################################
@@ -74,7 +86,8 @@ if [ -f $crabFile ]; then
 fi
 echo '[CRAB]
 jobtype = cmssw
-scheduler = condor
+scheduler = remoteGlidein
+use_server = 0
 
 [CMSSW]
 datasetpath = None
@@ -91,7 +104,7 @@ return_data = 0
 copy_data = 1
 publish_data = 0
 storage_element = cmseos.fnal.gov 
-storage_path = /srm/v2/server?SFN=/eos/uscms/store/user/'${user}'
+storage_path = /srm/v2/server?SFN=/eos/uscms/store/user/'${user}'/
 user_remote_dir = '${Name}'
 check_user_remote_dir = 0
 ui_working_dir = '${Name}'
