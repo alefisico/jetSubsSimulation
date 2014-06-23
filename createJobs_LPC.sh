@@ -26,7 +26,7 @@
 
 user=$USER
 stop1=100
-<<<<<<< HEAD
+
 stop2=250											# Mass of the stop2
 run=3
 numJobs=400
@@ -39,7 +39,7 @@ Main_Dir=${Base_Dir}jetSubsSimulation/								# Main Dir
 Name=RPVSt${stop1}tojj_8TeV_HT500		 						# Name of the process
 Output_Dir=/eos/uscms/store/user/${user}/${Name}/						# Output directory
 LHE_File_Dir=/eos/uscms/store/user/algomez/RPVSt100tojj_8TeV_HT500/lhe/				# Directory of the lhe file.
-=======
+
 stop2=250                                                                                       # Mass of the stop2
 run=8
 numJobs=400
@@ -52,7 +52,7 @@ Main_Dir=${Base_Dir}jetSubsSimulation/                                          
 Name=RPVSt${stop1}tojj_8TeV_HT500                                                               # Name of the process
 Output_Dir=/eos/uscms/store/user/${user}/${Name}/                                               # Output directory
 LHE_File_Dir=/eos/uscms/store/user/algomez/RPVSt100tojj_8TeV_HT500/lhe/                         # Directory of the lhe file.
->>>>>>> 03e3aaf81ee63b4dfc955abbcf454b7e850ba52a
+
 LHE_Name=${Name}_${run}.lhe
 emailForNotifications=gomez@physics.rutgers.edu
 #hadronizer=Hadronizer_MgmMatchTune4C_7TeV_madgraph_pythia8_cff_py_GEN_SIM_DIGI_L1_DIGI2RAW_HLT_RAW2DIGI_L1Reco_RECO_PU.py
@@ -76,21 +76,21 @@ cd $Working_Dir/${Name}_${run}
 
 ####### EOS directory for root files
 if [ -d $Output_Dir ]; then
-<<<<<<< HEAD
+
 	#rm -rf $Output_Dir
 	#mkdir -p $Output_Dir/${Name}_${run}/lhe/
 	mkdir -p $Output_Dir/${Name}_${run}/aodsim/
 else
 	#mkdir -p $Output_Dir/${Name}_${run}/lhe/
 	mkdir -p $Output_Dir/${Name}_${run}/aodsim/
-=======
+
         #rm -rf $Output_Dir
         mkdir -p $Output_Dir/${Name}_${run}/lhe/
         mkdir -p $Output_Dir/${Name}_${run}/aodsim/
 else
         mkdir -p $Output_Dir/${Name}_${run}/lhe/
         mkdir -p $Output_Dir/${Name}_${run}/aodsim/
->>>>>>> 03e3aaf81ee63b4dfc955abbcf454b7e850ba52a
+
 fi
 
 ######## Create a symbolic link to the lhe file
@@ -160,13 +160,13 @@ Notify_User = ${emailForNotifications}" >> ${nameCondorFile}
 
 for ((version=1;version<${numJobs}+1;version++))
 do
-<<<<<<< HEAD
+
 	events=$(echo "1+(${version}-1)*${eventsPerJob}" | bc)
 	echo "
-=======
+
         events=$(echo "1+(${version}-1)*${eventsPerJob}" | bc)
         echo "
->>>>>>> 03e3aaf81ee63b4dfc955abbcf454b7e850ba52a
+
 Output = ${Working_Dir}/${Name}_${run}/${Name}_${version}.stdout
 Error = ${Working_Dir}/${Name}_${run}/${Name}_${version}.stderr
 Log = ${Working_Dir}/${Name}_${run}/${Name}_${version}.condorlog
