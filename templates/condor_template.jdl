@@ -1,6 +1,0 @@
-# To use condor
-Universe = vanilla
-initialdir = /home/gomez/mySpace/Substructure/Generation/Simulation/CMSSW_5_3_2_patch4/src/mySimulations/
-Executable = $(initialdir)/scripts/run_TAG.sh
-+AccountingGroup = "group_rutgers.gomez"
-Notify_User = gomez@physics.rutgers.edu
