@@ -1,1 +1,0 @@
-*/7 * * * * bash /uscms_data/d3/dkolch/Background/DYDYJets/info/release_jobs.sh >> /uscms_data/d3/dkolch/Background/DYDYJets/info/output.log
