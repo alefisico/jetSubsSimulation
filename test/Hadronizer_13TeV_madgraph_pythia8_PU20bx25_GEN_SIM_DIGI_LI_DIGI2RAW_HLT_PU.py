@@ -33,7 +33,8 @@ process.maxEvents = cms.untracked.PSet(
 
 # Input source
 process.source = cms.Source("LHESource",
-    fileNames = cms.untracked.vstring('root://cmsxrootd.fnal.gov//store/user/algomez/RPVSttojj_13TeV/RPVSt200tojj_13TeV.lhe')
+    #fileNames = cms.untracked.vstring('root://cmsxrootd.fnal.gov//store/user/algomez/RPVSttojj_13TeV/RPVSt200tojj_13TeV.lhe')
+    fileNames = cms.untracked.vstring('root://cmsxrootd.fnal.gov//store/user/cmi34/lhefiles/100sttojj.lhe')
 )
 
 process.options = cms.untracked.PSet(
@@ -53,7 +54,8 @@ process.RAWSIMoutput = cms.OutputModule("PoolOutputModule",
     splitLevel = cms.untracked.int32(0),
     eventAutoFlushCompressedSize = cms.untracked.int32(5242880),
     outputCommands = process.RAWSIMEventContent.outputCommands,
-    fileName = cms.untracked.string('root://cmseos.fnal.gov//store/user/algomez/RPVSt200tojj_13TeV_PU20bx25_RAWSIM.root'),
+    #fileName = cms.untracked.string('root://cmseos.fnal.gov//store/user/algomez/RPVSt200tojj_13TeV_PU20bx25_RAWSIM.root'),
+    fileName = cms.untracked.string('file:RPVSt100tojj_13TeV_PU20bx25_RAWSIM.root'),
     dataset = cms.untracked.PSet(
         filterName = cms.untracked.string(''),
         dataTier = cms.untracked.string('GEN-SIM-RAW')
