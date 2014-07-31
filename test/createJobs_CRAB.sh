@@ -21,15 +21,13 @@
 #####################################
 
 user=${USER}
-stop1=100	## You can use this parameters later to make everything simpler. Now I am not using them at all
+stop1=200	## You can use this parameters later to make everything simpler. Now I am not using them at all
 stop2=250	## You can use this parameters later to make everything simpler. Now I am not using them at all
 
-numJobs=400
 totalNumberEvents=100000
-Energy=13000
 
 Main_Dir=/uscms_data/d3/algomez/Substructure/Simulation/CMSSW_6_2_5/src/mySIM13TeV/jetSubsSimulation/test/ # Main Dir
-Name=RPVSt${stop1}tojj_13TeV_PU20bx25		
+Name=RPVSt${stop1}tojj_13TeV_pythia8
 LHEFile=/store/user/algomez/RPVSttojj_13TeV/RPVSt200tojj_13TeV.lhe					# lhe file
 
 #####################################################
@@ -52,21 +50,43 @@ cd $Working_Dir/
 ##############################################
 ##### Create the python file for Ntuples
 ##############################################
-echo " Creating python file for GEN-SIM .. "
 
+echo " Creating python file for GEN-SIM .. "
 step0PythonFile="step0_${Name}_LHE_GEN_SIM.py"
 cp ${Main_Dir}/step0_LHE_GEN_SIM.py  ${step0PythonFile}
 
 sed -i 's,/store/user/algomez/RPVSttojj_13TeV/RPVSt200tojj_13TeV.lhe,'"${LHEFile}"',' ${step0PythonFile}
 sed -i 's/RPVSt200tojj_13TeV_PU20bx25_GEN.root/'"${Name}"'_GEN.root/' ${step0PythonFile}
 
+echo " Creating python file for RAWSIM (different PU scenarios).. "
+step1PythonFile="step1_${Name}_DIGI_LI_DIGI2RAW_HLT_"
+cp ${Main_Dir}/step1_DIGI_LI_DIGI2RAW_HLT_PU20bx25.py  ${step1PythonFile}'PU20bx25.py'
+cp ${Main_Dir}/step1_DIGI_LI_DIGI2RAW_HLT_PU20bx25.py  ${step1PythonFile}'PU40bx25.py'
+cp ${Main_Dir}/step1_DIGI_LI_DIGI2RAW_HLT_PU20bx25.py  ${step1PythonFile}'PU40bx50.py'
+
+sed -i 's/RPVSt100tojj_13TeV_PU20bx25_step1/'"${Name}"'_RAWSIM_PU20bx25/' ${step1PythonFile}'PU20bx25.py'
+sed -i 's/RPVSt100tojj_13TeV_PU20bx25_step1/'"${Name}"'_RAWSIM_PU40bx25/' ${step1PythonFile}'PU40bx25.py'
+sed -i 's/process.mix.input.nbPileupEvents.averageNumber = cms.double(20.000000)/process.mix.input.nbPileupEvents.averageNumber = cms.double(40.000000)/' ${step1PythonFile}'PU40bx25.py'
+sed -i 's/RPVSt100tojj_13TeV_PU20bx25_step1/'"${Name}"'_RAWSIM_PU40bx50/' ${step1PythonFile}'PU40bx50.py'
+sed -i 's/process.mix.bunchspace = cms.int32(25)/process.mix.bunchspace = cms.int32(50)/' ${step1PythonFile}'PU40bx50.py'
+sed -i 's/process.mix.input.nbPileupEvents.averageNumber = cms.double(20.000000)/process.mix.input.nbPileupEvents.averageNumber = cms.double(40.000000)/' ${step1PythonFile}'PU40bx50.py'
+
+echo " Creating python file for AODSIM (different PU scenarios).. "
+step2PythonFile="step2_${Name}_RAW2DIGI_L1Reco_RECO_"
+cp ${Main_Dir}/step2_RAW2DIGI_L1Reco_RECO.py  ${step2PythonFile}'PU20bx25.py'
+cp ${Main_Dir}/step2_RAW2DIGI_L1Reco_RECO.py  ${step2PythonFile}'PU40bx25.py'
+cp ${Main_Dir}/step2_RAW2DIGI_L1Reco_RECO.py  ${step2PythonFile}'PU40bx50.py'
+sed -i 's/RPVSt200tojj_13TeV_AODSIM_test/'"${Name}"'_AODSIM_PU20bx25/' ${step2PythonFile}'PU20bx25.py'
+sed -i 's/RPVSt200tojj_13TeV_AODSIM_test/'"${Name}"'_AODSIM_PU40bx25/' ${step2PythonFile}'PU40bx25.py'
+sed -i 's/RPVSt200tojj_13TeV_AODSIM_test/'"${Name}"'_AODSIM_PU40bx50/' ${step2PythonFile}'PU40bx50.py'
+
 ########################################################
 ######### Small file with the commands for condor
 ########################################################
-echo " Creating crab file .... "
-crabFile=crab_${Name}__GENSIM.cfg
-if [ -f $crabFile ]; then
-	rm -rf $crabFile
+echo " Creating crab files .... "
+crabFileStep0=crab_${Name}_GENSIM_step0.cfg
+if [ -f $crabFileStep0 ]; then
+	rm -rf $crabFileStep0
 fi
 echo '[CRAB]
 jobtype = cmssw
@@ -78,7 +98,7 @@ datasetpath = None
 generator = lhe
 pset = '${step0PythonFile}'
 total_number_of_events = '${totalNumberEvents}'
-number_of_jobs = '${numJobs}'
+number_of_jobs = 1000
 get_edm_output = 1
 allow_NonProductionCMSSW = 1
 
@@ -87,11 +107,168 @@ return_data = 0
 copy_data = 1
 publish_data = 1
 publish_data_name = '${Name}'_GENSIM
+dbs_url_for_publication =https://cmsdbsprod.cern.ch:8443/cms_dbs_ph_analysis_01_writer/servlet/DBSServlet
 storage_element = T3_US_FNALLPC
 user_remote_dir = '${Name}'_GENSIM
 check_user_remote_dir = 0
 ui_working_dir = '${Name}'_GENSIM
-'>> ${crabFile}
+'>> ${crabFileStep0}
+
+crabFileStep1=crab_${Name}_RAWSIM_step1_
+echo '[CRAB]
+jobtype = cmssw
+scheduler = remoteGlidein
+use_server = 0
+
+[CMSSW]
+datasetpath = ADD_YOUR_DATASET_HERE
+pset = '${step1PythonFile}'PU20bx25.py
+total_number_of_events = '${totalNumberEvents}'
+number_of_jobs = 1000
+get_edm_output = 1
+allow_NonProductionCMSSW = 1
+
+[USER]
+return_data = 0
+copy_data = 1
+publish_data = 1
+publish_data_name = '${Name}'_RAWSIM_625_PU20bx25
+dbs_url_for_publication =https://cmsdbsprod.cern.ch:8443/cms_dbs_ph_analysis_01_writer/servlet/DBSServlet
+storage_element = T3_US_FNALLPC
+user_remote_dir = '${Name}'_RAWSIM_625_PU20bx25
+check_user_remote_dir = 0
+ui_working_dir = '${Name}'_RAWSIM_625_PU20bx25
+'>> ${crabFileStep1}'PU20bx25.cfg'
+
+echo '[CRAB]
+jobtype = cmssw
+scheduler = remoteGlidein
+use_server = 0
+
+[CMSSW]
+datasetpath = ADD_YOUR_DATASET_HERE
+pset = '${step1PythonFile}'PU40bx25.py
+total_number_of_events = '${totalNumberEvents}'
+number_of_jobs = 1000
+get_edm_output = 1
+allow_NonProductionCMSSW = 1
+
+[USER]
+return_data = 0
+copy_data = 1
+publish_data = 1
+dbs_url_for_publication =https://cmsdbsprod.cern.ch:8443/cms_dbs_ph_analysis_01_writer/servlet/DBSServlet
+publish_data_name = '${Name}'_RAWSIM_625_PU40bx25
+storage_element = T3_US_FNALLPC
+user_remote_dir = '${Name}'_RAWSIM_625_PU40bx25
+check_user_remote_dir = 0
+ui_working_dir = '${Name}'_RAWSIM_625_PU40bx25
+'>> ${crabFileStep1}'PU40bx25.cfg'
+
+echo '[CRAB]
+jobtype = cmssw
+scheduler = remoteGlidein
+use_server = 0
+
+[CMSSW]
+datasetpath = ADD_YOUR_DATASET_HERE
+pset = '${step1PythonFile}'PU40bx50.py
+total_number_of_events = '${totalNumberEvents}'
+number_of_jobs = 1000
+get_edm_output = 1
+allow_NonProductionCMSSW = 1
+
+[USER]
+return_data = 0
+copy_data = 1
+publish_data = 1
+publish_data_name = '${Name}'_RAWSIM_625_PU40bx50
+dbs_url_for_publication =https://cmsdbsprod.cern.ch:8443/cms_dbs_ph_analysis_01_writer/servlet/DBSServlet
+storage_element = T3_US_FNALLPC
+user_remote_dir = '${Name}'_RAWSIM_625_PU40bx50
+check_user_remote_dir = 0
+ui_working_dir = '${Name}'_RAWSIM_625_PU40bx50
+'>> ${crabFileStep1}'PU40bx50.cfg'
+
+
+crabFileStep2=crab_${Name}_AODSIM_step2_
+echo '[CRAB]
+jobtype = cmssw
+scheduler = remoteGlidein
+use_server = 0
+
+[CMSSW]
+datasetpath = ADD_YOUR_DATASET_HERE
+pset = '${step2PythonFile}'PU20bx25.py
+total_number_of_events = '${totalNumberEvents}'
+number_of_jobs = 1000
+get_edm_output = 1
+allow_NonProductionCMSSW = 1
+
+[USER]
+return_data = 0
+copy_data = 1
+publish_data = 1
+publish_data_name = '${Name}'_RAWSIM_625_PU20bx25
+dbs_url_for_publication =https://cmsdbsprod.cern.ch:8443/cms_dbs_ph_analysis_01_writer/servlet/DBSServlet
+storage_element = T3_US_FNALLPC
+user_remote_dir = '${Name}'_RAWSIM_625_PU20bx25
+check_user_remote_dir = 0
+ui_working_dir = '${Name}'_RAWSIM_625_PU20bx25
+'>> ${crabFileStep2}'PU20bx25.cfg'
+
+echo '[CRAB]
+jobtype = cmssw
+scheduler = remoteGlidein
+use_server = 0
+
+[CMSSW]
+datasetpath = ADD_YOUR_DATASET_HERE
+pset = '${step2PythonFile}'PU40bx25.py
+total_number_of_events = '${totalNumberEvents}'
+number_of_jobs = 1000
+get_edm_output = 1
+allow_NonProductionCMSSW = 1
+
+[USER]
+return_data = 0
+copy_data = 1
+publish_data = 1
+dbs_url_for_publication =https://cmsdbsprod.cern.ch:8443/cms_dbs_ph_analysis_01_writer/servlet/DBSServlet
+publish_data_name = '${Name}'_RAWSIM_625_PU40bx25
+storage_element = T3_US_FNALLPC
+user_remote_dir = '${Name}'_RAWSIM_625_PU40bx25
+check_user_remote_dir = 0
+ui_working_dir = '${Name}'_RAWSIM_625_PU40bx25
+'>> ${crabFileStep2}'PU40bx25.cfg'
+
+echo '[CRAB]
+jobtype = cmssw
+scheduler = remoteGlidein
+use_server = 0
+
+[CMSSW]
+datasetpath = ADD_YOUR_DATASET_HERE
+pset = '${step2PythonFile}'PU40bx50.py
+total_number_of_events = '${totalNumberEvents}'
+number_of_jobs = 1000
+get_edm_output = 1
+allow_NonProductionCMSSW = 1
+
+[USER]
+return_data = 0
+copy_data = 1
+publish_data = 1
+publish_data_name = '${Name}'_RAWSIM_625_PU40bx50
+dbs_url_for_publication =https://cmsdbsprod.cern.ch:8443/cms_dbs_ph_analysis_01_writer/servlet/DBSServlet
+storage_element = T3_US_FNALLPC
+user_remote_dir = '${Name}'_RAWSIM_625_PU40bx50
+check_user_remote_dir = 0
+ui_working_dir = '${Name}'_RAWSIM_625_PU40bx50
+'>> ${crabFileStep2}'PU40bx50.cfg'
+
+
+
 
 #################################
 ##### To make it run
@@ -101,21 +278,22 @@ First load the libraries (only once per session):
 source /uscmst1/prod/grid/gLite_SL5.sh
 source /uscmst1/prod/grid/CRAB/crab.sh
 
-Create and submit your jobs:
+Create and submit your jobs (Example for step0):
 cd '${Name}'
-crab -create -cfg '${crabFile}' 
-crab -submit -cfg '${crabFile}' 
+crab -create -cfg '${crabFileStep0}' 
+crab -submit -cfg '${crabFileStep0}' 
 
 or just:
-crab -create -submit -cfg '${crabFile}' 
+crab -create -submit -cfg '${crabFileStep0}' 
 
 To check the status:
-crab -status -c '${Name}'
+crab -status -c NAME_OF_YOUR_PROCESS_FOLDER
 
 When your jobs are done:
-crab -report -c '${Name}'
+crab -report -c NAME_OF_YOUR_PROCESS_FOLDER
 
 To publish:
+crab -report -c NAME_OF_YOUR_PROCESS_FOLDER
 
 Have a nice day :D '
 
