@@ -314,11 +314,14 @@ crab -submit NUMBER_JOBS -cfg '${crabFileStep0}'
 To check the status:
 crab -status -c '${Name}'_GENSIM
 
+To resubmit failed jobs:
+crab -resubmit LIST_OF_FAILED_JOBS  -c '${Name}'_GENSIM 
+
 When your jobs are done:
 crab -report -c '${Name}'_GENSIM
 
 To publish:
-crab -report -c '${Name}'_GENSIM
+crab -publish -c '${Name}'_GENSIM
 
 Have a nice day :D '
 
