@@ -1,6 +1,7 @@
-#################################################################################################
-	Instructions to generate samples 13TeV - pythia8 for different PU scenarios 
-#################################################################################################
+##################################################################
+	Instructions to generate samples 13TeV - pythia8 
+		for different PU scenarios 
+##################################################################
 
 This instructions are for CMSSW_6_2_5 using sl5 machines. 
 
