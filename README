@@ -1,6 +1,7 @@
-#################################################################################################
-	Instructions to generate samples 13TeV - pythia8 for different PU scenarios 
-#################################################################################################
+##################################################################
+	Instructions to generate samples 13TeV - pythia8 
+		for different PU scenarios 
+##################################################################
 
 This instructions are for CMSSW_6_2_5 using sl5 machines. 
 
@@ -25,9 +26,15 @@ scram b -j 18
 
 We are going to split the entire generation in 3 pieces. (Four if you don't have an lhe file)
 
-- Step0: First we are going to hadronize our lhe file, and simulate how particles interact with the detector (GENSIM). This step is common for all the pileup scenarios, so this you should do it only ONCE.
-- Step1: We add pileup, simulate L1 and digitalize the signal (RAWSIM). This step saves the RAW data.  This step is different for each pileup case.
-- Step2: Finally we reconstruct your objects and save them in the CMS format (AODSIM). This step is the same for each pileup case. 
+- Step0: 
+	First we are going to hadronize our lhe file, and simulate how particles interact with the detector (GENSIM). 
+	This step is common for all the pileup scenarios, so this you should do it only ONCE.
+- Step1: 
+	We add pileup, simulate L1 and digitalize the signal (RAWSIM). This step saves the RAW data.  
+	This step is different for each pileup case.
+- Step2: 
+	Finally we reconstruct your objects and save them in the CMS format (AODSIM). 
+	This step is the same for each pileup case. 
 
 
 ########################
@@ -41,11 +48,56 @@ To run: ./createJobs_CRAB.sh
 You will create a folder with the name of the process that you wrote in createJobs_CRAB.sh script.
 There you will have python files and crab files almost ready to run. (You shouldn't change anything there)
 
-First run Step0 (see above): you just need to submit the crab job. (If you don't know how to submit them, after you run createJobs_CRAB.sh you will have some instructions) THIS STEP YOU WILL HAVE TO DO IT ONCE. 
-After your jobs are done, and you PUBLISH your samples. You will need to recall the name of the dataset that you create. This information must be shown in the publishing process. If not you can go here: 
+First run Step0: you just need to submit the crab job. (If you don't know how to submit them, after you run createJobs_CRAB.sh you will have some instructions or check the CRAB in a Nutshell section below.) THIS STEP YOU WILL HAVE TO DO IT ONCE. Check the status of your jobs frequently. It is totally normal that some of your jobs will failed with some error. Most of the cases you will have to resubmit your jobs several times. After your jobs are done (or at least more than 95% of them), you have to PUBLISH your samples to make the output files visible for the next step. Search in the output of the publishing step for the name of the dataset. It looks like:
+ 	datasetpath = /RPVSt200tojj_13TeV_GENSIM/algomez-RPVSt200tojj_13TeV_GENSIM-62459d50bdc5c4568f334137235e3bfc/USER
+You will need to recall the name of the dataset that you create. This information must be shown in the publishing process. If not you can go here: 
 https://cmsweb.cern.ch/das/
-and search: dataset=/*/YOURUSERNAME*/USER (the last user is NOT your username, is the word USER). Once you have it, go to crab_*_RAWIM_step1_*.cfg and add the dataset. Do this for the three PU scenarios. After that send these jobs to crab.
-For the last part (step2), do should do the same as step1 but now your crab file is called crab_*_AODSIM_step2_*.cfg.
+and search: dataset=/*/YOURUSERNAME*/USER (the last user is NOT your username, is the word USER). 
+
+For Step1: go to crab_*_RAWIM_step1_*.cfg and add the dataset from step0. This step is different for each PU scenario, but the procedure is the same as step0. To simplify this step, once you run createJobs_CRAB.sh, you will have 3 different python config files (each one for each different PU scenario). You will have to submit your crab jobs as in step0. Remember to PUBLISH your files as in step0, you will need to know the name of the dataset for step2.
+
+For Step2: do should do the same as step1 but now your crab file is called crab_*_AODSIM_step2_*.cfg. 
+
+
+#########################
+#### CRAB in a Nutshell
+#########################
+
+First load the libraries (only once per session, only for sl5 machines):
+	source /uscmst1/prod/grid/gLite_SL5.sh
+	source /uscmst1/prod/grid/CRAB/crab.sh
+
+Follow these steps to run crab jobs:
+1. To create your jobs:
+	crab -create -cfg NAME_OF_YOUR_CONFIG_FILE
+
+2. To submit your jobs:
+	crab -submit NUMBER_JOBS -c NAME_OF_THE_WORKING_DIR_CREATED
+		*** In CRAB2 you can submit a maximum of 500 jobs each time. However, you don't need to wait 
+		*** for the first set of jobs to finish, to send the next set of jobs. For example, if you 
+		*** create 800 jobs, you can run this two commands one after the other:
+		*** crab -submit 500 -c NAME_OF_THE_WORKING_DIR_CREATED
+		*** crab -submit 300 -c NAME_OF_THE_WORKING_DIR_CREATED
+
+3. To check the status:
+	crab -status -c NAME_OF_THE_WORKING_DIR_CREATED
+	or just check here: http://dashb-cms-job.cern.ch/dashboard/templates/task-analysis/
+
+4. To resubmit failed jobs:
+	crab -resubmit LIST_OF_FAILED_JOBS -c NAME_OF_THE_WORKING_DIR_CREATED
+
+5. When your jobs are done:
+	crab -getoutput LIST_OF_JOBS -c NAME_OF_THE_WORKING_DIR_CREATED
+		With this command, your log files will be written in your working directory. Sometimes this step is not needed it.
+	crab -report -c NAME_OF_THE_WORKING_DIR_CREATED
+		(This step is not needed, but usually you can know the total number of events in your entire sample)
+
+6. To publish:
+	crab -publish -c NAME_OF_THE_WORKING_DIR_CREATED
+		(You need to publish to dbs if you want to run your jobs globally. Publishing your sample 
+		does not mean that it is going to be an official sample in CMS or that someone has to approve it. 
+		It is only to access your dataset globally.)
+
 
 Enjoy it!. 
 
