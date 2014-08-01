@@ -1,8 +1,8 @@
 #!/bin/bash 
 
-####################################################
+###########################################################################
 ###
-###  Simple bash script to copy a hadronizer and send jobs to crab.
+###  Simple bash script to create python files for simulation.
 ###
 ###  Alejandro Gomez Espinosa
 ###  gomez@physics.rutgers.edu
@@ -12,23 +12,27 @@
 ###  (If it is an executable (chmod +x createJobs.sh):
 ###  ./createJobs_CRAB.sh 
 ###
-###  You must change the PARAMETERS according with your needs. Initially is the only part that you should modify.
+###  You must change the PARAMETERS according with your needs. 
+###  Initially is the only part that you should modify.
 ###
-####################################################
+###########################################################################
 
 ######################################
 ### PARAMETERS
 #####################################
 
 user=${USER}
-stop1=200	## You can use this parameters later to make everything simpler. Now I am not using them at all
+stop1=200	## You can use this parameters later to make everything simpler. 
 stop2=250	## You can use this parameters later to make everything simpler. Now I am not using them at all
 
 totalNumberEvents=100000
 
-Main_Dir=/uscms_data/d3/algomez/Substructure/Simulation/CMSSW_6_2_5/src/mySIM13TeV/jetSubsSimulation/test/ # Main Dir
+Main_Dir=/uscms_data/d3/algomez/Substructure/Simulation/CMSSW_6_2_5/src/mySIM13TeV/jetSubsSimulation/test/ 
 Name=RPVSt${stop1}tojj_13TeV_pythia8
-LHEFile=/store/user/algomez/RPVSttojj_13TeV/RPVSt200tojj_13TeV.lhe					# lhe file
+LHEFile=/store/user/algomez/RPVSttojj_13TeV/RPVSt200tojj_13TeV.lhe					#### DONT USE the entire eos path!!!!!
+
+
+
 
 #####################################################
 #### Here is where the code starts.. 
@@ -122,6 +126,7 @@ use_server = 0
 
 [CMSSW]
 datasetpath = ADD_YOUR_DATASET_HERE
+dbs_url=phys03
 pset = '${step1PythonFile}'PU20bx25.py
 total_number_of_events = '${totalNumberEvents}'
 number_of_jobs = 1000
@@ -138,6 +143,9 @@ storage_element = T3_US_FNALLPC
 user_remote_dir = '${Name}'_RAWSIM_625_PU20bx25
 check_user_remote_dir = 0
 ui_working_dir = '${Name}'_RAWSIM_625_PU20bx25
+
+[GRID]
+data_location_override=T1_US_FNAL_Disk
 '>> ${crabFileStep1}'PU20bx25.cfg'
 
 echo '[CRAB]
@@ -147,6 +155,7 @@ use_server = 0
 
 [CMSSW]
 datasetpath = ADD_YOUR_DATASET_HERE
+dbs_url=phys03
 pset = '${step1PythonFile}'PU40bx25.py
 total_number_of_events = '${totalNumberEvents}'
 number_of_jobs = 1000
@@ -163,6 +172,9 @@ storage_element = T3_US_FNALLPC
 user_remote_dir = '${Name}'_RAWSIM_625_PU40bx25
 check_user_remote_dir = 0
 ui_working_dir = '${Name}'_RAWSIM_625_PU40bx25
+
+[GRID]
+data_location_override=T1_US_FNAL_Disk
 '>> ${crabFileStep1}'PU40bx25.cfg'
 
 echo '[CRAB]
@@ -172,6 +184,7 @@ use_server = 0
 
 [CMSSW]
 datasetpath = ADD_YOUR_DATASET_HERE
+dbs_url=phys03
 pset = '${step1PythonFile}'PU40bx50.py
 total_number_of_events = '${totalNumberEvents}'
 number_of_jobs = 1000
@@ -188,6 +201,9 @@ storage_element = T3_US_FNALLPC
 user_remote_dir = '${Name}'_RAWSIM_625_PU40bx50
 check_user_remote_dir = 0
 ui_working_dir = '${Name}'_RAWSIM_625_PU40bx50
+
+[GRID]
+data_location_override=T1_US_FNAL_Disk
 '>> ${crabFileStep1}'PU40bx50.cfg'
 
 
@@ -199,6 +215,7 @@ use_server = 0
 
 [CMSSW]
 datasetpath = ADD_YOUR_DATASET_HERE
+dbs_url=phys03
 pset = '${step2PythonFile}'PU20bx25.py
 total_number_of_events = '${totalNumberEvents}'
 number_of_jobs = 1000
@@ -215,6 +232,9 @@ storage_element = T3_US_FNALLPC
 user_remote_dir = '${Name}'_RAWSIM_625_PU20bx25
 check_user_remote_dir = 0
 ui_working_dir = '${Name}'_RAWSIM_625_PU20bx25
+
+[GRID]
+data_location_override=T1_US_FNAL_Disk
 '>> ${crabFileStep2}'PU20bx25.cfg'
 
 echo '[CRAB]
@@ -224,6 +244,7 @@ use_server = 0
 
 [CMSSW]
 datasetpath = ADD_YOUR_DATASET_HERE
+dbs_url=phys03
 pset = '${step2PythonFile}'PU40bx25.py
 total_number_of_events = '${totalNumberEvents}'
 number_of_jobs = 1000
@@ -240,6 +261,9 @@ storage_element = T3_US_FNALLPC
 user_remote_dir = '${Name}'_RAWSIM_625_PU40bx25
 check_user_remote_dir = 0
 ui_working_dir = '${Name}'_RAWSIM_625_PU40bx25
+
+[GRID]
+data_location_override=T1_US_FNAL_Disk
 '>> ${crabFileStep2}'PU40bx25.cfg'
 
 echo '[CRAB]
@@ -249,6 +273,7 @@ use_server = 0
 
 [CMSSW]
 datasetpath = ADD_YOUR_DATASET_HERE
+dbs_url=phys03
 pset = '${step2PythonFile}'PU40bx50.py
 total_number_of_events = '${totalNumberEvents}'
 number_of_jobs = 1000
@@ -265,6 +290,9 @@ storage_element = T3_US_FNALLPC
 user_remote_dir = '${Name}'_RAWSIM_625_PU40bx50
 check_user_remote_dir = 0
 ui_working_dir = '${Name}'_RAWSIM_625_PU40bx50
+
+[GRID]
+data_location_override=T1_US_FNAL_Disk
 '>> ${crabFileStep2}'PU40bx50.cfg'
 
 
@@ -281,19 +309,16 @@ source /uscmst1/prod/grid/CRAB/crab.sh
 Create and submit your jobs (Example for step0):
 cd '${Name}'
 crab -create -cfg '${crabFileStep0}' 
-crab -submit -cfg '${crabFileStep0}' 
-
-or just:
-crab -create -submit -cfg '${crabFileStep0}' 
+crab -submit NUMBER_JOBS -cfg '${crabFileStep0}' 
 
 To check the status:
-crab -status -c NAME_OF_YOUR_PROCESS_FOLDER
+crab -status -c '${Name}'_GENSIM
 
 When your jobs are done:
-crab -report -c NAME_OF_YOUR_PROCESS_FOLDER
+crab -report -c '${Name}'_GENSIM
 
 To publish:
-crab -report -c NAME_OF_YOUR_PROCESS_FOLDER
+crab -report -c '${Name}'_GENSIM
 
 Have a nice day :D '
 

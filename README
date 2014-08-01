@@ -1,0 +1,57 @@
+#################################################################################################
+	Instructions to generate samples 13TeV - pythia8 for different PU scenarios 
+#################################################################################################
+
+This instructions are for CMSSW_6_2_5 using sl5 machines. 
+
+###################
+#### Basic setup
+###################
+cmsrel CMSSW_6_2_5
+cd CMSSW_6_2_5/src/
+cmsenv
+
+mkdir my13TeVSimulation (for example)
+git clone https://github.com/alefisico/jetSubsSimulation.git my13TeVSimulation/jetSubsSimulation
+cd  my13TeVSimulation/jetSubsSimulation/
+git checkout -b 13TeVSimFiles origin/13TeVSimFiles
+cd ../../
+scram b -j 18
+
+
+#######################
+#### Brief explanation
+#######################
+
+We are going to split the entire generation in 3 pieces. (Four if you don't have an lhe file)
+
+- Step0: First we are going to hadronize our lhe file, and simulate how particles interact with the detector (GENSIM). This step is common for all the pileup scenarios, so this you should do it only ONCE.
+- Step1: We add pileup, simulate L1 and digitalize the signal (RAWSIM). This step saves the RAW data.  This step is different for each pileup case.
+- Step2: Finally we reconstruct your objects and save them in the CMS format (AODSIM). This step is the same for each pileup case. 
+
+
+########################
+##### To run the code
+########################
+
+Go to my13TeVSimulation/jetSubsSimulation/test/
+There you have a file called createJobs_CRAB.sh. You only need to modify the first part, PARAMETERS.
+To run: ./createJobs_CRAB.sh
+
+You will create a folder with the name of the process that you wrote in createJobs_CRAB.sh script.
+There you will have python files and crab files almost ready to run. (You shouldn't change anything there)
+
+First run Step0 (see above): you just need to submit the crab job. (If you don't know how to submit them, after you run createJobs_CRAB.sh you will have some instructions) THIS STEP YOU WILL HAVE TO DO IT ONCE. 
+After your jobs are done, and you PUBLISH your samples. You will need to recall the name of the dataset that you create. This information must be shown in the publishing process. If not you can go here: 
+https://cmsweb.cern.ch/das/
+and search: dataset=/*/YOURUSERNAME*/USER (the last user is NOT your username, is the word USER). Once you have it, go to crab_*_RAWIM_step1_*.cfg and add the dataset. Do this for the three PU scenarios. After that send these jobs to crab.
+For the last part (step2), do should do the same as step1 but now your crab file is called crab_*_AODSIM_step2_*.cfg.
+
+Enjoy it!. 
+
+
+************ DISCLAIMER ****************
+This instructions are, by NO MEANS, any official 
+prescription to generate events in CMS. 
+Use it at your own risk!
+**************************************** 
