@@ -145,7 +145,7 @@ check_user_remote_dir = 0
 ui_working_dir = '${Name}'_RAWSIM_625_PU20bx25
 
 [GRID]
-data_location_override=T1_US_FNAL_Disk
+data_location_override=T2_USFNAL_Disk
 '>> ${crabFileStep1}'PU20bx25.cfg'
 
 echo '[CRAB]
@@ -174,7 +174,7 @@ check_user_remote_dir = 0
 ui_working_dir = '${Name}'_RAWSIM_625_PU40bx25
 
 [GRID]
-data_location_override=T1_US_FNAL_Disk
+data_location_override=T2_USFNAL_Disk
 '>> ${crabFileStep1}'PU40bx25.cfg'
 
 echo '[CRAB]
@@ -203,7 +203,7 @@ check_user_remote_dir = 0
 ui_working_dir = '${Name}'_RAWSIM_625_PU40bx50
 
 [GRID]
-data_location_override=T1_US_FNAL_Disk
+data_location_override=T2_USFNAL_Disk
 '>> ${crabFileStep1}'PU40bx50.cfg'
 
 
@@ -234,7 +234,7 @@ check_user_remote_dir = 0
 ui_working_dir = '${Name}'_RAWSIM_625_PU20bx25
 
 [GRID]
-data_location_override=T1_US_FNAL_Disk
+data_location_override=T2_USFNAL_Disk
 '>> ${crabFileStep2}'PU20bx25.cfg'
 
 echo '[CRAB]
@@ -263,7 +263,7 @@ check_user_remote_dir = 0
 ui_working_dir = '${Name}'_RAWSIM_625_PU40bx25
 
 [GRID]
-data_location_override=T1_US_FNAL_Disk
+data_location_override=T2_USFNAL_Disk
 '>> ${crabFileStep2}'PU40bx25.cfg'
 
 echo '[CRAB]
@@ -292,7 +292,7 @@ check_user_remote_dir = 0
 ui_working_dir = '${Name}'_RAWSIM_625_PU40bx50
 
 [GRID]
-data_location_override=T1_US_FNAL_Disk
+data_location_override=T2_USFNAL_Disk
 '>> ${crabFileStep2}'PU40bx50.cfg'
 
 
