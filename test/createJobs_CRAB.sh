@@ -121,8 +121,9 @@ ui_working_dir = '${Name}'_GENSIM
 crabFileStep1=crab_${Name}_RAWSIM_step1_
 echo '[CRAB]
 jobtype = cmssw
-scheduler = remoteGlidein
-use_server = 0
+scheduler = condor
+#scheduler = remoteGlidein
+#use_server = 0
 
 [CMSSW]
 datasetpath = ADD_YOUR_DATASET_HERE
@@ -144,14 +145,15 @@ user_remote_dir = '${Name}'_RAWSIM_625_PU20bx25
 check_user_remote_dir = 0
 ui_working_dir = '${Name}'_RAWSIM_625_PU20bx25
 
-[GRID]
-data_location_override=T2_USFNAL_Disk
+#[GRID]
+#data_location_override=T2_USFNAL_Disk
 '>> ${crabFileStep1}'PU20bx25.cfg'
 
 echo '[CRAB]
 jobtype = cmssw
-scheduler = remoteGlidein
-use_server = 0
+scheduler = condor
+#scheduler = remoteGlidein
+#use_server = 0
 
 [CMSSW]
 datasetpath = ADD_YOUR_DATASET_HERE
@@ -173,14 +175,15 @@ user_remote_dir = '${Name}'_RAWSIM_625_PU40bx25
 check_user_remote_dir = 0
 ui_working_dir = '${Name}'_RAWSIM_625_PU40bx25
 
-[GRID]
-data_location_override=T2_USFNAL_Disk
+#[GRID]
+#data_location_override=T2_USFNAL_Disk
 '>> ${crabFileStep1}'PU40bx25.cfg'
 
 echo '[CRAB]
 jobtype = cmssw
-scheduler = remoteGlidein
-use_server = 0
+scheduler = condor
+#scheduler = remoteGlidein
+#use_server = 0
 
 [CMSSW]
 datasetpath = ADD_YOUR_DATASET_HERE
@@ -202,16 +205,17 @@ user_remote_dir = '${Name}'_RAWSIM_625_PU40bx50
 check_user_remote_dir = 0
 ui_working_dir = '${Name}'_RAWSIM_625_PU40bx50
 
-[GRID]
-data_location_override=T2_USFNAL_Disk
+#[GRID]
+#data_location_override=T2_USFNAL_Disk
 '>> ${crabFileStep1}'PU40bx50.cfg'
 
 
 crabFileStep2=crab_${Name}_AODSIM_step2_
 echo '[CRAB]
 jobtype = cmssw
-scheduler = remoteGlidein
-use_server = 0
+scheduler = condor
+#scheduler = remoteGlidein
+#use_server = 0
 
 [CMSSW]
 datasetpath = ADD_YOUR_DATASET_HERE
@@ -226,21 +230,22 @@ allow_NonProductionCMSSW = 1
 return_data = 0
 copy_data = 1
 publish_data = 1
-publish_data_name = '${Name}'_RAWSIM_625_PU20bx25
+publish_data_name = '${Name}'_AODSIM_625_PU20bx25
 dbs_url_for_publication =https://cmsdbsprod.cern.ch:8443/cms_dbs_ph_analysis_01_writer/servlet/DBSServlet
 storage_element = T3_US_FNALLPC
-user_remote_dir = '${Name}'_RAWSIM_625_PU20bx25
+user_remote_dir = '${Name}'_AODSIM_625_PU20bx25
 check_user_remote_dir = 0
-ui_working_dir = '${Name}'_RAWSIM_625_PU20bx25
+ui_working_dir = '${Name}'_AODSIM_625_PU20bx25
 
-[GRID]
-data_location_override=T2_USFNAL_Disk
+#[GRID]
+#data_location_override=T2_USFNAL_Disk
 '>> ${crabFileStep2}'PU20bx25.cfg'
 
 echo '[CRAB]
 jobtype = cmssw
-scheduler = remoteGlidein
-use_server = 0
+scheduler = condor
+#scheduler = remoteGlidein
+#use_server = 0
 
 [CMSSW]
 datasetpath = ADD_YOUR_DATASET_HERE
@@ -256,20 +261,21 @@ return_data = 0
 copy_data = 1
 publish_data = 1
 dbs_url_for_publication =https://cmsdbsprod.cern.ch:8443/cms_dbs_ph_analysis_01_writer/servlet/DBSServlet
-publish_data_name = '${Name}'_RAWSIM_625_PU40bx25
+publish_data_name = '${Name}'_AODSIM_625_PU40bx25
 storage_element = T3_US_FNALLPC
-user_remote_dir = '${Name}'_RAWSIM_625_PU40bx25
+user_remote_dir = '${Name}'_AODSIM_625_PU40bx25
 check_user_remote_dir = 0
-ui_working_dir = '${Name}'_RAWSIM_625_PU40bx25
+ui_working_dir = '${Name}'_AODSIM_625_PU40bx25
 
-[GRID]
-data_location_override=T2_USFNAL_Disk
+#[GRID]
+#data_location_override=T2_USFNAL_Disk
 '>> ${crabFileStep2}'PU40bx25.cfg'
 
 echo '[CRAB]
 jobtype = cmssw
-scheduler = remoteGlidein
-use_server = 0
+scheduler = condor
+#scheduler = remoteGlidein
+#use_server = 0
 
 [CMSSW]
 datasetpath = ADD_YOUR_DATASET_HERE
@@ -284,15 +290,15 @@ allow_NonProductionCMSSW = 1
 return_data = 0
 copy_data = 1
 publish_data = 1
-publish_data_name = '${Name}'_RAWSIM_625_PU40bx50
+publish_data_name = '${Name}'_AODSIM_625_PU40bx50
 dbs_url_for_publication =https://cmsdbsprod.cern.ch:8443/cms_dbs_ph_analysis_01_writer/servlet/DBSServlet
 storage_element = T3_US_FNALLPC
-user_remote_dir = '${Name}'_RAWSIM_625_PU40bx50
+user_remote_dir = '${Name}'_AODSIM_625_PU40bx50
 check_user_remote_dir = 0
-ui_working_dir = '${Name}'_RAWSIM_625_PU40bx50
+ui_working_dir = '${Name}'_AODSIM_625_PU40bx50
 
-[GRID]
-data_location_override=T2_USFNAL_Disk
+#[GRID]
+#data_location_override=T2_USFNAL_Disk
 '>> ${crabFileStep2}'PU40bx50.cfg'
 
 
