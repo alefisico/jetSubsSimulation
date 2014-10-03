@@ -3,20 +3,15 @@
 		for different PU scenarios 
 ##################################################################
 
-This instructions are for CMSSW_6_2_5 using sl5 machines. 
+This instructions are for CMSSW_7_0_6_patch1 using sl5 machines. 
 
 ###################
 #### Basic setup
 ###################
-cmsrel CMSSW_6_2_5
-cd CMSSW_6_2_5/src/
+cmsrel CMSSW_7_0_6_patch1
+cd CMSSW_7_0_6_patch1/src/
 cmsenv
-
-mkdir my13TeVSimulation (for example)
-git clone https://github.com/alefisico/jetSubsSimulation.git my13TeVSimulation/jetSubsSimulation
-cd  my13TeVSimulation/jetSubsSimulation/
-git checkout -b 13TeVSimFiles origin/13TeVSimFiles
-cd ../../
+git clone -b v706patch1 https://github.com/alefisico/jetSubsSimulation.git my13TeVSimulation/jetSubsSimulation
 scram b -j 18
 
 
@@ -24,7 +19,7 @@ scram b -j 18
 #### Brief explanation
 #######################
 
-We are going to split the entire generation in 3 pieces. (Four if you don't have an lhe file)
+We are going to split the entire generation in 4 pieces. (Four if you don't have an lhe file)
 
 - Step0: 
 	First we are going to hadronize our lhe file, and simulate how particles interact with the detector (GENSIM). 
@@ -33,7 +28,10 @@ We are going to split the entire generation in 3 pieces. (Four if you don't have
 	We add pileup, simulate L1 and digitalize the signal (RAWSIM). This step saves the RAW data.  
 	This step is different for each pileup case.
 - Step2: 
-	Finally we reconstruct your objects and save them in the CMS format (AODSIM). 
+	We reconstruct your objects and save them in the CMS format (AODSIM). 
+	This step is the same for each pileup case. 
+- Step3:
+	We are going to take the AOD files an store only high level objets in a compress way, i.e. MiniAOD.
 	This step is the same for each pileup case. 
 
 
@@ -56,7 +54,7 @@ and search: dataset=/*/YOURUSERNAME*/USER (the last user is NOT your username, i
 
 For Step1: go to crab_*_RAWIM_step1_*.cfg and add the dataset from step0. This step is different for each PU scenario, but the procedure is the same as step0. To simplify this step, once you run createJobs_CRAB.sh, you will have 3 different python config files (each one for each different PU scenario). You will have to submit your crab jobs as in step0. Remember to PUBLISH your files as in step0, you will need to know the name of the dataset for step2.
 
-For Step2: do should do the same as step1 but now your crab file is called crab_*_AODSIM_step2_*.cfg. 
+For Step2 and Step3: do should do the same as step1 but now your crab file is called crab_*_AODSIM_step2_*.cfg. 
 
 
 #########################

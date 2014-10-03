@@ -21,16 +21,15 @@
 ### PARAMETERS
 #####################################
 
-user=${USER}
 stop1=200	## You can use this parameters later to make everything simpler. 
 stop2=250	## You can use this parameters later to make everything simpler. Now I am not using them at all
 
 totalNumberEvents=100000
 
-Main_Dir=$PWD 
 Name=RPVSt${stop1}tojj_13TeV_pythia8
 LHEFile=/store/user/algomez/RPVSttojj_13TeV/RPVSt200tojj_13TeV.lhe					#### DONT USE the entire eos path!!!!!
-PU=( 'PU20bx25' 'PU40bx25' 'PUbx50' )
+
+PU=( 'PU20bx25' 'PU40bx25' 'PUbx50' )									#### You can remove the PU scenario that you are not going to use.
 
 
 
@@ -40,6 +39,7 @@ PU=( 'PU20bx25' 'PU40bx25' 'PUbx50' )
 #### Initially you shouldn't modify this part
 #####################################################
 echo " Creating directories..."
+Main_Dir=$PWD 
 ####### Working directory
 Working_Dir=${Main_Dir}/${Name}	
 if [ -d $Working_Dir ]; then
@@ -168,5 +168,6 @@ Once you have the dataset from step0 or step1, for example:
 sed -i "s/ADD_YOUR_DATASET_HERE/\/RPVSt100tojj_13TeV_pythia8_GENSIM\/algomez-RPVSt100tojj_13TeV_pythia8_GENSIM-62459d50bdc5c4568f334137235e3bfc\/USER/g" crab2*RAWSIM*
 ' >> README
 
+echo 'Crab instructions in the README file'
 echo 'Have a nice day :D '
 
