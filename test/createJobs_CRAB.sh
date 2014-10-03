@@ -22,7 +22,7 @@
 #####################################
 
 user=${USER}
-stop1=100	## You can use this parameters later to make everything simpler. 
+stop1=200	## You can use this parameters later to make everything simpler. 
 stop2=250	## You can use this parameters later to make everything simpler. Now I am not using them at all
 
 totalNumberEvents=100000
@@ -87,6 +87,15 @@ sed -i 's/inputFile/'"${Name}"'_AODSIM_PU40bx25/' ${step2PythonFile}'PU40bx25.py
 sed -i 's/inputFile/'"${Name}"'_AODSIM_PU40bx50/' ${step2PythonFile}'PU40bx50.py'
 sed -i 's/POSTLS170_V7/POSTLS170_V6A/' ${step2PythonFile}'PU40bx50.py'
 
+echo " Creating python file for MiniAOD (different PU scenarios).. "
+step3PythonFile="step3_${Name}_MiniAOD_"
+cp ${Main_Dir}/step3_MiniAOD.py  ${step3PythonFile}'PU20bx25.py'
+cp ${Main_Dir}/step3_MiniAOD.py  ${step3PythonFile}'PU40bx25.py'
+cp ${Main_Dir}/step3_MiniAOD.py  ${step3PythonFile}'PU40bx50.py'
+sed -i 's/inputFile/'"${Name}"'_MiniAOD_PU20bx25/' ${step3PythonFile}'PU20bx25.py'
+sed -i 's/inputFile/'"${Name}"'_MiniAOD_PU40bx25/' ${step3PythonFile}'PU40bx25.py'
+sed -i 's/inputFile/'"${Name}"'_MiniAOD_PU40bx50/' ${step3PythonFile}'PU40bx50.py'
+
 ########################################################
 ######### Small file with the commands for condor
 ########################################################
@@ -97,6 +106,8 @@ sed -i 's/test/'"${step0PythonFile}"'/' ${crabFileStep0}
 sed -i 's/NAME/'"${Name}"'_GENSIM_v706/' ${crabFileStep0}
 
 crabFileStep1=crab2_${Name}_RAWSIM_step1_
+crabFileStep2=crab2_${Name}_AODSIM_step2_
+crabFileStep3=crab2_${Name}_MiniAOD_step3_
 for i in ${PU[@]}; do
 	cp ${Main_Dir}/crab2.cfg  ${crabFileStep1}${i}'.cfg'
 	cp ${Main_Dir}/crab2.cfg  ${crabFileStep1}${i}'.cfg'
@@ -107,21 +118,26 @@ for i in ${PU[@]}; do
 	sed -i 's/^#//' ${crabFileStep1}${i}'.cfg'
 	sed -i 's/None/ADD_YOUR_DATASET_HERE/' ${crabFileStep1}${i}'.cfg'
 	sed -i 's/generator = lhe/dbs_url = phys03/' ${crabFileStep1}${i}'.cfg'
-done
 
-crabFileStep2=crab2_${Name}_AODSIM_step2_
-for j in ${PU[@]}; do
-	cp ${Main_Dir}/crab2.cfg  ${crabFileStep2}${j}'.cfg'
-	cp ${Main_Dir}/crab2.cfg  ${crabFileStep2}${j}'.cfg'
-	cp ${Main_Dir}/crab2.cfg  ${crabFileStep2}${j}'.cfg'
-	sed -i 's/test/'"${step2PythonFile}${j}"'/' ${crabFileStep2}${j}'.cfg'
-	sed -i 's/NAME/'"${Name}"'_AODSIM_v706_'"${j}"'/' ${crabFileStep2}${j}'.cfg'
-#	sed -i 's/remoteGlidein/condor/' ${crabFileStep2}${j}'.cfg'
-	sed -i 's/^#//' ${crabFileStep2}${j}'.cfg'
-	sed -i 's/None/ADD_YOUR_DATASET_HERE/' ${crabFileStep2}${j}'.cfg'
-	sed -i 's/generator = lhe/dbs_url = phys03/' ${crabFileStep2}${j}'.cfg'
-done
+	cp ${Main_Dir}/crab2.cfg  ${crabFileStep2}${i}'.cfg'
+	cp ${Main_Dir}/crab2.cfg  ${crabFileStep2}${i}'.cfg'
+	cp ${Main_Dir}/crab2.cfg  ${crabFileStep2}${i}'.cfg'
+	sed -i 's/test/'"${step2PythonFile}${i}"'/' ${crabFileStep2}${i}'.cfg'
+	sed -i 's/NAME/'"${Name}"'_AODSIM_v706_'"${i}"'/' ${crabFileStep2}${i}'.cfg'
+#	sed -i 's/remoteGlidein/condor/' ${crabFileStep2}${i}'.cfg'
+	sed -i 's/^#//' ${crabFileStep2}${i}'.cfg'
+	sed -i 's/None/ADD_YOUR_DATASET_HERE/' ${crabFileStep2}${i}'.cfg'
+	sed -i 's/generator = lhe/dbs_url = phys03/' ${crabFileStep2}${i}'.cfg'
 
+	cp ${Main_Dir}/crab2.cfg  ${crabFileStep3}${i}'.cfg'
+	cp ${Main_Dir}/crab2.cfg  ${crabFileStep3}${i}'.cfg'
+	cp ${Main_Dir}/crab2.cfg  ${crabFileStep3}${i}'.cfg'
+	sed -i 's/test/'"${step3PythonFile}${i}"'/' ${crabFileStep3}${i}'.cfg'
+	sed -i 's/NAME/'"${Name}"'_MiniAOD_v706_'"${i}"'/' ${crabFileStep3}${i}'.cfg'
+	sed -i 's/^#//' ${crabFileStep3}${i}'.cfg'
+	sed -i 's/None/ADD_YOUR_DATASET_HERE/' ${crabFileStep3}${i}'.cfg'
+	sed -i 's/generator = lhe/dbs_url = phys03/' ${crabFileStep3}${i}'.cfg'
+done
 
 #################################
 ##### To make it run
