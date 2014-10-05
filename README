@@ -56,6 +56,7 @@ For Step1: go to crab_*_RAWIM_step1_*.cfg and add the dataset from step0. This s
 
 For Step2 and Step3: do should do the same as step1 but now your crab file is called crab_*_AODSIM_step2_*.cfg. 
 
+**** For a quick test, you can use the python script called analyzerMiniAOD.py on your MiniAOD files. It will print some quantities in your screen.  
 
 #########################
 #### CRAB in a Nutshell
