@@ -3,7 +3,7 @@
 		for different PU scenarios 
 ##################################################################
 
-This instructions are for CMSSW_7_0_6_patch1 using sl5 machines. 
+This instructions are for CMSSW_7_0_6_patch1 using sl6 machines. 
 
 ###################
 #### Basic setup
