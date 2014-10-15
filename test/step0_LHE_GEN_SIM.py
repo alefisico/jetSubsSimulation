@@ -13,8 +13,10 @@ process.load('SimGeneral.HepPDTESSource.pythiapdt_cfi')
 process.load('FWCore.MessageService.MessageLogger_cfi')
 process.load('Configuration.EventContent.EventContent_cff')
 process.load('SimGeneral.MixingModule.mixNoPU_cfi')
-process.load('Configuration.Geometry.GeometryExtended2015Reco_cff')
-process.load('Configuration.Geometry.GeometryExtended2015_cff')
+#process.load('Configuration.Geometry.GeometryExtended2015Reco_cff')
+#process.load('Configuration.Geometry.GeometryExtended2015_cff')
+process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
+process.load('Configuration.StandardSequences.GeometrySimDB_cff')
 process.load('Configuration.StandardSequences.MagneticField_38T_PostLS1_cff')
 process.load('Configuration.StandardSequences.Generator_cff')
 process.load('IOMC.EventVertexGenerators.VtxSmearedRealistic8TeVCollision_cfi')
@@ -62,9 +64,10 @@ process.RAWSIMoutput = cms.OutputModule("PoolOutputModule",
 # Additional output definition
 
 # Other statements
+process.XMLFromDBSource.label = cms.string("ExtendedPostLS1")
 process.genstepfilter.triggerConditions=cms.vstring("generation_step")
 from Configuration.AlCa.GlobalTag import GlobalTag
-process.GlobalTag = GlobalTag(process.GlobalTag, 'POSTLS162_V2::All', '')
+process.GlobalTag = GlobalTag(process.GlobalTag, 'POSTLS170_V5::All', '')
 
 process.generator = cms.EDFilter("Pythia8HadronizerFilter",
     maxEventsToPrint = cms.untracked.int32(1),
