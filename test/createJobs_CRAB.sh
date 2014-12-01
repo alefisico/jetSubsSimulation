@@ -57,7 +57,7 @@ cd $Working_Dir/
 ##############################################
 
 echo " Creating python file for GEN-SIM .. "
-step0PythonFile="step0_${Name}_LHE_GEN_SIM.py"
+step0PythonFile="step0_${Name}_LHE_GEN_SIM"
 cp ${Main_Dir}/step0_LHE_GEN_SIM.py  ${step0PythonFile}
 
 sed -i 's,/store/user/algomez/RPVSttojj_13TeV/RPVSt200tojj_13TeV.lhe,'"${LHEFile}"',' ${step0PythonFile}
